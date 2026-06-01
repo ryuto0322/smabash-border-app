@@ -11,7 +11,7 @@
 </head>
 <body>
 
-    <h1 class="title">目指せスネーク地元最強</h1>
+    <h1 class="title">スマブラ戦績表</h1>
 
     <form action="/fighters" method="POST" style="margin-bottom: 30px; text-align: center;">
         @csrf
@@ -44,6 +44,26 @@
                 <p style="margin: 0 0 10px 0; font-size: 14px; font-weight: bold; color: #444;">
                     【 {{ $fighter->wins ?? 0 }} 勝 / {{ $fighter->losses ?? 0 }} 敗 】
                 </p>
+                <p style="margin: 5px 0 10px 0; font-size: 14px; font-whight: bold; color: #ff9500;">
+                    @php
+                        $totalGames = ($fighter->wins ?? 0) + ($fighter->losses ?? 0);
+                        $winRate = $totalGames > 0 ? round((($fighter->wins ?? 0) / $totalGames) * 100, 1) : 0;
+                    @endphp
+                    勝率：{{ $winRate}}%
+                </p>
+                <div style="display: flex; gap: 5px; justify-content flex-end;">
+
+
+
+
+
+
+
+
+
+
+
+
                 <div style="display: flex; gap: 5px; justify-content: flex-end;">
                     <form action="/fighters/{{ $fighter->id }}/win" method="POST" style="margin: 0;">
                         @csrf
@@ -52,7 +72,7 @@
 
                     <form action="/fighters/{{ $fighter->id }}/lose" method="POST" style="margin: 0;">
                         @csrf
-                        <button type="submit" style="background: #007aff; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-weight: bold; cursor: pointer;">LOSE...</button>
+                        <button type="submit" style="background: #007aff; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-weight: bold; cursor: pointer;">LOSE</button>
                     </form>
                 </div>
             </div>

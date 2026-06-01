@@ -32,14 +32,16 @@ class FighterController extends Controller
 
 
 
-    public function win(Fighter $fighter)//win
+    public function win($id)//win
     {
+        $fighter = \App\Models\Fighter::findOrFail($id);
         $fighter->increment('wins');
-        return redirect('/fighters');
+        return redirect()->back();
     }
-    public function lose(Fighter $fighter)//lose
+    public function lose($id)//lose
     {
+        $fighter = \App\models\fighter::findOrFail($id);
         $fighter->increment('losses');
-        return redirect('/fighters');
+        return redirect()->back();
     }
 }

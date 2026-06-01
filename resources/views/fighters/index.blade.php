@@ -39,42 +39,45 @@
                 
             </div>
 
+            @php
+                $match = $fighter->results->where('opponent_fighter_id', $fighter->id)->first();
+
+                $wins = $match ? $match->wins : 0;
+                $losses = $match ? $match->losses : 0;
+
+                $totalGames = $wins + $losses;
+                $winRate = $totalGames > 0 ? round(($wins / $totalGames) * 100, 1) : 0;
+            @endphp
+
             <div style="text-align: right;">
-
                 <p style="margin: 0 0 10px 0; font-size: 14px; font-weight: bold; color: #444;">
-                    【 {{ $fighter->wins ?? 0 }} 勝 / {{ $fighter->losses ?? 0 }} 敗 】
+                    【 {{ $wins }} 勝 / {{ $losses }} 敗 】
                 </p>
-                <p style="margin: 5px 0 10px 0; font-size: 14px; font-whight: bold; color: #ff9500;">
-                    @php
-                        $totalGames = ($fighter->wins ?? 0) + ($fighter->losses ?? 0);
-                        $winRate = $totalGames > 0 ? round((($fighter->wins ?? 0) / $totalGames) * 100, 1) : 0;
-                    @endphp
-                    勝率：{{ $winRate}}%
+                <p style="margin: 5px 0 10px 0; font-size: 14px; font-weight: bold; color: #ff9500;">
+                    勝率：{{ $winRate }}%
                 </p>
-                <div style="display: flex; gap: 5px; justify-content flex-end;">
+            </div>
 
 
 
 
 
-
-
-
-
-
-
-
-                <div style="display: flex; gap: 5px; justify-content: flex-end;">
-                    <form action="/fighters/{{ $fighter->id }}/win" method="POST" style="margin: 0;">
-                        @csrf
-                        <button type="submit" style="background: #ff3b30; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-weight: bold; cursor: pointer;">WiN!</button>
+                <div class="d-flex">
+                    <form action="{{ route('match-results.update') }}" method="POST" style="display: inline">
+                        @csrf 
+                        <input type="hidden" name="fighter_id" value="{{ $fighter->id }}"><input type="hidden" name="opponent_fighter_id" value="2"><input type="hidden" name="type" value="win">
+                        <button type="submit" class="btn-danger btn-sm me-1">WIN!</button>
                     </form>
 
-                    <form action="/fighters/{{ $fighter->id }}/lose" method="POST" style="margin: 0;">
+                    <form action="{{ route('match-results.update') }}" method="POST" style="display: inline">
                         @csrf
-                        <button type="submit" style="background: #007aff; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-weight: bold; cursor: pointer;">LOSE</button>
+                        <input type="hidden" name="fighter_id" value="{{ $fighter->id }}">
+                        <input type="hidden" name="opponent_fighter_id"value="2">
+                        <input type="hidden" name="type" value="lose">
+                        <button type="submit" class="btn-primary btn-sm">LOSE</button>
                     </form>
                 </div>
+
             </div>
 
         </div>

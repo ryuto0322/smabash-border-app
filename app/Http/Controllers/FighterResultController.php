@@ -15,10 +15,12 @@ class FighterResultController extends Controller
             'type' => 'required|in:win,lose',
         ]);
 
+        // スネーク vs 相手キャラ の戦績を1件だけきれいに更新する
         $result = FighterResult::firstOrNew([
             'fighter_id' => $request->fighter_id,
             'opponent_fighter_id' => $request->opponent_fighter_id,
         ]);
+
         if($request->type === 'win'){
             $result->wins += 1;
         }else{
